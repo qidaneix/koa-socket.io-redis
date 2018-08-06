@@ -8,5 +8,11 @@
 </head>
 <body>
   hello world
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
+  <script>
+  let socket = io();
+  socket.on('hi', (msg) => console.log(msg));
+  {# socket.on() #}
+  </script>
 </body>
 </html>

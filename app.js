@@ -1,8 +1,17 @@
 const Koa = require('koa');
 const nunjucks = require('nunjucks');
-const init = require('./init.js');
+const socketIO = require('socket.io');
+
+const { init, redis } = require('./init.js');
 
 const app = new Koa();
+const io = socketIO(app);
+
+redis.
+
+io.on('connection', (socket) => {
+  socket.emit('hi', '你好哇！');
+})
 
 app.use(async (ctx, next) => {
   await next();

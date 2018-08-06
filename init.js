@@ -4,6 +4,9 @@
 
 const WebSocket = require('ws');
 const pako = require('pako');
+const Redis = require('ioredis');
+
+const redis = new Redis(6379, '172.0.0.1');
 
 const WS_URL = 'wss://api.huobi.pro/ws';
 
@@ -17,10 +20,11 @@ function handle(data) {
   switch (channel) {
     case 'depth':
       orderbook[symbol] = data.tick;
-      console.log(orderbook);
+      // console.log(orderbook);
       break;
     case 'kline':
-      console.log('kline', data.tick);
+      // console.log('kline', data.tick);
+      // redis.set('kline', data.tick);
       break;
   }
 }
@@ -47,7 +51,7 @@ function subscribe(ws) {
 function init() {
   var ws = new WebSocket(WS_URL);
   ws.on('open', () => {
-    console.log('open');
+    // console.log('open');
     subscribe(ws);
   });
   ws.on('message', (data) => {
@@ -63,17 +67,18 @@ function init() {
       // console.log(msg);
       handle(msg);
     } else {
-      console.log(text);
+      // console.log(text);
     }
   });
   ws.on('close', () => {
-    console.log('close');
+    // console.log('close');
     init();
   });
   ws.on('error', err => {
-    console.log('error', err);
+    // console.log('error', err);
     init();
   });
 }
 
-module.exports = init;
+exports.init = init;
+exports.redis = redis;
