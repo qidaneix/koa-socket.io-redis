@@ -7,12 +7,6 @@ const { init, redis } = require('./init.js');
 const app = new Koa();
 const io = socketIO(app);
 
-redis.
-
-io.on('connection', (socket) => {
-  socket.emit('hi', '你好哇！');
-})
-
 app.use(async (ctx, next) => {
   await next();
   ctx.response.type = 'text/html';
@@ -22,3 +16,9 @@ app.use(async (ctx, next) => {
 app.listen(3000);
 console.log('app started at port 3000...');
 init();
+
+
+io.on('connection', (socket) => {
+  console.log('connect success!');
+  socket.emit('hi', '你好哇！');
+})
